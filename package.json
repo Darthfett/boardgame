@@ -1,0 +1,11 @@
+{
+  "name": "boardgame",
+  "version": "0.0.0",
+  "description": "Board game renderer in canvas, takes a directed graph, and renders in canvas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Casey Kuball <darthfett@gmail.com>",
+  "license": "ISC"
+}
