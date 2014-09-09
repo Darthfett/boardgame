@@ -54,12 +54,52 @@ function main() {
         context.fillText(u, cx, cy);
     });
     
+    function draw_lines(points) {
+        for(var i = 1; i < points.length; i++) {
+            var p0 = points[i-1];
+            var p1 = points[i];
+            context.beginPath();
+            context.moveTo(p0.x, p0.y);
+            context.lineTo(p1.x, p1.y);
+            context.stroke();
+        }
+    }
+    
+    function draw_quadratic(ps) {
+        console.log('draw quadratic ' + JSON.stringify(ps));
+        context.beginPath();
+        context.moveTo(ps[0].x, ps[0].y);
+        context.quadraticCurveTo(ps[1].x, ps[1].y, ps[2].x, ps[2].y);
+        context.stroke();
+    }
+    
+    function draw_bezier(ps) {
+        context.beginPath();
+        context.moveTo(ps[0].x, ps[0].y);
+        context.bezierCurveTo(ps[1].x, ps[1].y, ps[2].x, ps[2].y, ps[3].x, ps[3].y);
+        context.stroke();
+    }
+    
+    function draw_points(points) {
+        if (points.length == 3) {
+            draw_quadratic(points);
+        } else if (points.length == 4) {
+            draw_bezier(points);
+        } else {
+            assert(points.length > 1);
+            draw_points(points);
+        }
+    }
+    
     // Not really working: Draw lines starting from Node U, to each point in value, finally to node V
     layout.eachEdge(function(e, u, v, value) {
         var points = [layout.node(u)];
         points.push.apply(points, value.points);        
         points.push(layout.node(v));
         
+        draw_points(points);
+        
+        /*
         // Debug: Draw a circle at each point
         context.beginPath();
         context.arc(points[0].x, points[0].y, 3, 0, 2 * Math.PI, false);
@@ -76,7 +116,7 @@ function main() {
             context.beginPath();
             context.arc(p1.x, p1.y, 3, 0, 2 * Math.PI, false);
             context.stroke();
-        }
+        }*/
     });
 
 }
